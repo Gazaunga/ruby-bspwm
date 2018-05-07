@@ -7,8 +7,8 @@ require 'open3'
 # ---- Config Variables ----
 # Path to the unix pipe used for communication
 $panel_fifo = "/tmp/panel-fifo"
-# Path to JSON formatted colour list ( #{Dir.home} represents ~ )
-$colour_file = "#{Dir.home}/.Xresources.d/bar-colours.json"
+# Path to JSON formatted color list ( #{Dir.home} represents ~ )
+$color_file = "#{Dir.home}/.Xresources.d/bar-colors.json"
 # Options passed to bar 
 $panel_height = 16
 $panel_font = "Kochi Gothic,東風ゴシック:style=Regular:size=9"
@@ -21,8 +21,8 @@ end
 system("mkfifo #{$panel_fifo}")
 $f = File.open($panel_fifo, "a+")
 $f.sync = true
-$c = File.open($colour_file, "r+")
-$colours = JSON.parse($c.read, symbolize_names: true)
+$c = File.open($color_file, "r+")
+$colors = JSON.parse($c.read, symbolize_names: true)
 $c.close
 
 $pids = Array.new
@@ -136,7 +136,7 @@ end
 
 def startBar()
   # Use pipes on bar_parser.rb and lemonbar to print parsed information to bar 
-  lemonbarCmd = "lemonbar -a 32 -n #{$panel_wm_name} -g x#{$panel_height} -f \"#{$panel_font}\" -F \"#{$colours[:DEFAULT_FG]}\" -B \"#{$colours[:DEFAULT_BG]}\""
+  lemonbarCmd = "lemonbar -a 32 -n #{$panel_wm_name} -g x#{$panel_height} -f \"#{$panel_font}\" -F \"#{$colors[:DEFAULT_FG]}\" -B \"#{$colors[:DEFAULT_BG]}\""
   parsepipe = IO.popen("bar_parser.rb", "r+")
   lemonpipe = IO.popen(lemonbarCmd, "r+")
   shpipe = IO.popen("sh", "w")
